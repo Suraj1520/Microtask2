@@ -1,4 +1,5 @@
 const express = require('express')
+require('dotenv').config();
 const cors=require('cors')
 const app = express()
 app.use(cors())
@@ -13,14 +14,15 @@ app.use(express.json());
 app.use("/users", userRouter);
 app.use("/visitorcount", visitor);
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get('/', (req, res) => res.send('Hello World!'));
 
-mongoose.connect(
-    "mongodb+srv://suraj_08:suraj123@cluster0.ganrtfp.mongodb.net/microtask2?retryWrites=true&w=majority",
-    () => {
-      console.log("Connected to MongoDB");
-    }
-  );
+mongoose.connect(process.env.MONGODB_URL)
+    .then(() => {
+      console.log("Connected to mongoDB");
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 
 app.listen(3000, () => {
     console.log("App started");
